@@ -18,6 +18,8 @@ import miniplc0java.tokenizer.Token;
 import miniplc0java.tokenizer.TokenType;
 import miniplc0java.tokenizer.Tokenizer;
 
+import java.net.*;
+
 import net.sourceforge.argparse4j.*;
 import net.sourceforge.argparse4j.impl.Arguments;
 import net.sourceforge.argparse4j.inf.ArgumentAction;
@@ -44,7 +46,7 @@ public class App {
             input = System.in;
         } else {
             try {
-                input = new FileInputStream(inputFileName);
+                input = new FileInputStream((File) inputFileName);
             } catch (FileNotFoundException e) {
                 System.err.println("Cannot find input file.");
                 e.printStackTrace();

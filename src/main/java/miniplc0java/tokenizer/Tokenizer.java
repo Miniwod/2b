@@ -14,7 +14,7 @@ public class Tokenizer {
     // 这里本来是想实现 Iterator<Token> 的，但是 Iterator 不允许抛异常，于是就这样了
     /**
      * 获取下一个 Token
-     * 
+     *
      * @return
      * @throws TokenizeError 如果解析有异常则抛出
      */
@@ -43,11 +43,18 @@ public class Tokenizer {
         // 直到查看下一个字符不是数字为止:
         // -- 前进一个字符，并存储这个字符
         //
+        String ans="";
+        while(Character.isDigit(it.peekChar())){
+            ans+=it.nextChar();
+        }
         // 解析存储的字符串为无符号整数
         // 解析成功则返回无符号整数类型的token，否则返回编译错误
         //
         // Token 的 Value 应填写数字的值
-        throw new Error("Not implemented");
+        for(int i=0;i<ans.length();i++){
+            if(!(Character.isDigit(ans.toCharArray()[i]))) throw new Error("Not implemented");
+        }
+        return new Token(TokenType.Uint, ans, it.previousPos(), it.currentPos());
     }
 
     private Token lexIdentOrKeyword() throws TokenizeError {
@@ -55,12 +62,32 @@ public class Tokenizer {
         // 直到查看下一个字符不是数字或字母为止:
         // -- 前进一个字符，并存储这个字符
         //
+        String ans="";
+        while(Character.isDigit(it.peekChar()) || Character.isAlphabetic(it.peekChar())){
+            ans+=it.nextChar();
+        }
         // 尝试将存储的字符串解释为关键字
         // -- 如果是关键字，则返回关键字类型的 token
         // -- 否则，返回标识符
         //
+        for(int i=0;i<ans.length();i++){
+            if(Character.isWhitespace(ans.toCharArray()[i])) throw new Error("Not implemented");
+        }
+        switch (ans){
+            case "begin":
+                return new Token(TokenType.Begin, ans, it.previousPos(), it.currentPos());
+            case "end":
+                return new Token(TokenType.End, ans, it.previousPos(), it.currentPos());
+            case "var":
+                return new Token(TokenType.Var, ans, it.previousPos(), it.currentPos());
+            case "const":
+                return new Token(TokenType.Const, ans, it.previousPos(), it.currentPos());
+            case "print":
+                return new Token(TokenType.Print, ans, it.previousPos(), it.currentPos());
+            default:
+                return new Token(TokenType.Ident, ans, it.previousPos(), it.currentPos());
+        }
         // Token 的 Value 应填写标识符或关键字的字符串
-        throw new Error("Not implemented");
     }
 
     private Token lexOperatorOrUnknown() throws TokenizeError {
@@ -70,17 +97,32 @@ public class Tokenizer {
 
             case '-':
                 // 填入返回语句
-                throw new Error("Not implemented");
+                return new Token(TokenType.Minus, '-', it.previousPos(), it.currentPos());
+                //throw new Error("Not implemented");
 
             case '*':
                 // 填入返回语句
-                throw new Error("Not implemented");
+                return new Token(TokenType.Mult, '*', it.previousPos(), it.currentPos());
+                //throw new Error("Not implemented");
 
             case '/':
                 // 填入返回语句
-                throw new Error("Not implemented");
+                return new Token(TokenType.Div, '/', it.previousPos(), it.currentPos());
+                //throw new Error("Not implemented");
 
             // 填入更多状态和返回语句
+
+            case '=':
+                return new Token(TokenType.Equal, '=', it.previousPos(), it.currentPos());
+
+            case ';':
+                return new Token(TokenType.Semicolon, ';', it.previousPos(), it.currentPos());
+
+            case '(':
+                return new Token(TokenType.LParen, '(', it.previousPos(), it.currentPos());
+
+            case ')':
+                return new Token(TokenType.RParen, ')', it.previousPos(), it.currentPos());
 
             default:
                 // 不认识这个输入，摸了
