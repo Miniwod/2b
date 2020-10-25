@@ -66,6 +66,7 @@ public class Tokenizer {
         while(Character.isDigit(it.peekChar()) || Character.isAlphabetic(it.peekChar())){
             ans+=it.nextChar();
         }
+        System.out.println(ans);
         // 尝试将存储的字符串解释为关键字
         // -- 如果是关键字，则返回关键字类型的 token
         // -- 否则，返回标识符
