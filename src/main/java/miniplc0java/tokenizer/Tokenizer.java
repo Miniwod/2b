@@ -58,7 +58,7 @@ public class Tokenizer {
         for(int i=0;i<ans.length();i++){
             if(!Character.isDigit(ans.toCharArray()[i])) throw new TokenizeError(ErrorCode.InvalidInput, pp);
         }
-        return new Token(TokenType.Uint,ans,pp,it.currentPos())
+        return new Token(TokenType.Uint,ans,pp,it.currentPos());
     }
 
     private Token lexIdentOrKeyword() throws TokenizeError {
